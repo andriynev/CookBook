@@ -9,11 +9,11 @@ The Recipe App is an Android app made using Android Studio. It is created so tha
 The app uttilizes Material Design.
 
 ## Technical 
-- `adapters` folder contains adapters for: database - directions - ingredients - main page - recipes - viewPager for a single recipe (Ingrediants, Directions). 
-- `dao` folder contains data access objects for: directions - ingredients - SQLiteDatabaseHelper - recipes - users (id, password, name, email). 
-- `models` folder contains classes to define a: database - direction - ingredient - recipe - user.
+- `com.receipt_app.adapters` folder contains com.receipt_app.adapters for: database - directions - ingredients - main page - recipes - viewPager for a single recipe (Ingrediants, Directions).
+- `com.receipt_app.dao` folder contains data access objects for: directions - ingredients - SQLiteDatabaseHelper - recipes - users (id, password, name, email).
+- `com.receipt_app.models` folder contains classes to define a: database - direction - ingredient - recipe - user.
 - `ui` folder contains the fragments for the different cuisines and the activities.
-- `utils` folder contains snippets of code for various functionalities.
+- `com.receipt_app.utils` folder contains snippets of code for various functionalities.
 
 ## Images
 | ![](https://github.com/aza0092/Cooking-Recipe-Android-App/blob/master/media/splash%20screen.png) | ![](https://github.com/aza0092/Cooking-Recipe-Android-App/blob/master/media/main%20screen.png) |
