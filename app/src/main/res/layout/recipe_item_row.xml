@@ -26,7 +26,7 @@
                 android:focusable="false"
                 android:scaleType="centerCrop"
                 android:transitionName="image_shared"
-                tools:src="@drawable/european" />
+                tools:src="@drawable/soup" />
 
             <TextView
                 android:id="@+id/titleLabel"

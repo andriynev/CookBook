@@ -3,19 +3,17 @@ package com.receipt_app.models;
 public class User {
     private int id;
     private String username;
-    private String fullname;
-    private String email;
     private String password;
+    private String token;
 
-    public User(String username, String fullname, String email, String password) {
+    public User(String username, String password) {
         this.username = username;
-        this.fullname = fullname;
-        this.email = email;
         this.password = password;
     }
 
-    public User(int id, String username, String fullname, String email, String password) {
-        this(username, fullname, email, password);
+    public User(int id, String username, String token) {
+        this.username = username;
+        this.token = token;
         this.id = id;
     }
 
@@ -35,20 +33,12 @@ public class User {
         this.username = username;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getToken() {
+        return token;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getPassword() {

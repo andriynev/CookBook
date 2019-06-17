@@ -26,20 +26,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-
-        <EditText
-            android:id="@+id/ingredientField"
+        <RelativeLayout
+            android:id="@+id/ingredientPartLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:layout_margin="8dp"
-            android:layout_toLeftOf="@id/add_button"
-            android:hint="New ingredient" />
+            >
+            <Spinner
+                android:id="@+id/planets_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 />
+
+            <EditText
+                android:id="@+id/ingredientField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:layout_margin="8dp"
+                android:layout_below="@id/planets_spinner"
+                android:hint="New ingredient" />
+        </RelativeLayout>
+
 
         <Button
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/ingredientPartLayout"
             android:layout_alignParentRight="true"
             android:text="Add" />
     </RelativeLayout>

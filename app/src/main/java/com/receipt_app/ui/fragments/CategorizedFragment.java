@@ -20,6 +20,7 @@ import java.util.List;
 import com.receipt_app.R;
 import com.receipt_app.adapters.DatabaseAdapter;
 import com.receipt_app.adapters.RecipeAdapter;
+import com.receipt_app.models.Category;
 import com.receipt_app.models.Recipe;
 
 public abstract class CategorizedFragment extends Fragment {
@@ -41,20 +42,23 @@ public abstract class CategorizedFragment extends Fragment {
     public static Fragment newInstance(String category) {
         Fragment fragment;
         switch (category) {
-            case "American":
-                fragment = new AmericanFragment();
+            case Category.SOUPS:
+                fragment = new SoupsFragment();
                 break;
-            case "Asian":
-                fragment = new AsianFragment();
+            case Category.SALADS:
+                fragment = new SaladsFragment();
                 break;
-            case "European":
-                fragment = new EuropeanFragment();
+            case Category.DRINKS:
+                fragment = new DrinksFragment();
                 break;
-            case "Mediterranean":
-                fragment = new MediterraneanFragment();
+            case Category.DESERTS:
+                fragment = new DesertsFragment();
+                break;
+            case Category.SECOND_COURCES:
+                fragment = new SecondCoursesFragment();
                 break;
             default:
-                fragment = new VeganFragment();
+                fragment = new SoupsFragment();
                 break;
         }
 
@@ -75,7 +79,7 @@ public abstract class CategorizedFragment extends Fragment {
         currentCategory = args.getString("category");
 
         recipeRecyclerView = rootView.findViewById(R.id.recyclerView);
-        emptyView = rootView.findViewById(R.id.empty_view);
+        emptyView = rootView.findViewById(R.id.empty_view_text);
         recipeRecyclerView.setHasFixedSize(true);
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

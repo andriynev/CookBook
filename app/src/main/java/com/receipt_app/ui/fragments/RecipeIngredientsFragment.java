@@ -3,15 +3,20 @@ package com.receipt_app.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +30,7 @@ import com.receipt_app.models.Recipe;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecipeIngredientsFragment extends NavigableFragment {
+public class RecipeIngredientsFragment extends NavigableFragment implements AdapterView.OnItemSelectedListener {
 
     private IngredientListener mListener;
     private List<Ingredient> ingredientList;
@@ -93,6 +98,16 @@ public class RecipeIngredientsFragment extends NavigableFragment {
             }
         });
 
+        Spinner spinner = (Spinner) view.findViewById(R.id.planets_spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setOnItemSelectedListener(this);
+        spinner.setAdapter(adapter);
+
         return view;
     }
 
@@ -131,5 +146,17 @@ public class RecipeIngredientsFragment extends NavigableFragment {
 
     public interface IngredientListener {
         void navigateToDirectionsFragment(List<Ingredient> ingredients);
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        Toast.makeText(parent.getContext(),
+                "You have selected : " + parent.getItemAtPosition(pos).toString(),
+                Toast.LENGTH_LONG).show();
+        ingredientField.setText(parent.getItemAtPosition(pos).toString());
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
     }
 }

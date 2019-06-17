@@ -57,12 +57,6 @@ public class DatabaseAdapter {
         return this;
     }
 
-    public boolean signIn(String email, String password) {
-        User currentUser = userDAO.getUserByEmailAndPassword(email, password);
-        UserPreferences.saveCurrentUser(mContext, currentUser);
-        return currentUser != null;
-    }
-
     public void addNewUser(User user) {
         userDAO.insert(user);
     }

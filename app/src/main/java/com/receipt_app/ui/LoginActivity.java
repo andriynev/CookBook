@@ -1,6 +1,7 @@
 package com.receipt_app.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
@@ -9,6 +10,12 @@ import android.widget.Toast;
 
 import com.receipt_app.R;
 import com.receipt_app.adapters.DatabaseAdapter;
+import com.receipt_app.network.NetworkManager;
+import com.receipt_app.network.api.AuthResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends ToolbarActivity {
 
@@ -16,6 +23,7 @@ public class LoginActivity extends ToolbarActivity {
     private TextInputLayout mLoginPassword;
 
     private DatabaseAdapter databaseAdapter;
+    private NetworkManager networkManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +31,7 @@ public class LoginActivity extends ToolbarActivity {
         setContentView(R.layout.activity_login);
 
         databaseAdapter = DatabaseAdapter.getInstance(this);
+        networkManager = new NetworkManager(this);
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -41,20 +50,29 @@ public class LoginActivity extends ToolbarActivity {
         }
     }
 
-    private void loginUser(String email, String password) {
-        boolean status = databaseAdapter.signIn(email, password);
-        if (status) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, "Invalid credentials.", Toast.LENGTH_LONG).show();
-        }
+    private void loginUser(String username, String password) {
+        LoginActivity app = this;
+        networkManager.signIn(username, password, new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(app, "Invalid credentials.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Intent intent = new Intent(app, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Toast.makeText(app, "Invalid credentials.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void onCreateAccountPressed(View view) {
-        startActivity(new Intent(this, MainActivity.class));
-        //startActivity(new Intent(this, RegisterActivity.class));
+        startActivity(new Intent(this, RegisterActivity.class));
     }
 }

@@ -8,6 +8,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,19 +87,19 @@ public class MainActivity extends ToolbarActivity implements CategorizedFragment
                 @DrawableRes int image = -1;
                 switch (position) {
                     case 0:
-                        image = R.drawable.american;
+                        image = R.drawable.soup;
                         break;
                     case 1:
-                        image = R.drawable.vegan;
+                        image = R.drawable.second_course;
                         break;
                     case 2:
-                        image = R.drawable.asian;
+                        image = R.drawable.salad;
                         break;
                     case 3:
-                        image = R.drawable.mediterranean;
+                        image = R.drawable.desert;
                         break;
                     case 4:
-                        image = R.drawable.european;
+                        image = R.drawable.drink;
                         break;
                 }
 
@@ -176,6 +177,11 @@ public class MainActivity extends ToolbarActivity implements CategorizedFragment
                 }
                 break;
         }
+    }
+    public void addRecipe(View view) {
+        Intent intent = new Intent(this, CreateRecipeActivity.class);
+        intent.putExtra("category", getCurrentlyDisplayedCategory());
+        startActivityForResult(intent, REQUEST_ADD_RECIPE);
     }
 
     private String getCurrentlyDisplayedCategory() {

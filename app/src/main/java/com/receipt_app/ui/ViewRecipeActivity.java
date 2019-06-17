@@ -1,6 +1,7 @@
 package com.receipt_app.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,6 +57,8 @@ public class ViewRecipeActivity extends ToolbarActivity {
 
         mRecipeImage.setImageURI(Uri.fromFile(new File(currentRecipe.getImagePath())));
         mRecipeDescription.setText(currentRecipe.getDescription());
+        /*String email = pref.getString("EMAIL", null);
+        mUserEmail.setText(email);*/
 
         mTabLayout.bringToFront();
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), currentRecipe);

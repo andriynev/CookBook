@@ -4,16 +4,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.receipt_app.ui.fragments.AmericanFragment;
-import com.receipt_app.ui.fragments.AsianFragment;
-import com.receipt_app.ui.fragments.EuropeanFragment;
-import com.receipt_app.ui.fragments.MediterraneanFragment;
-import com.receipt_app.ui.fragments.VeganFragment;
+import com.receipt_app.models.Category;
+import com.receipt_app.ui.fragments.SoupsFragment;
+import com.receipt_app.ui.fragments.SaladsFragment;
+import com.receipt_app.ui.fragments.DrinksFragment;
+import com.receipt_app.ui.fragments.DesertsFragment;
+import com.receipt_app.ui.fragments.SecondCoursesFragment;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int TAB_COUNT = 5;
-    private String[] tabTitles = {"American", "Vegan", "Asian", "Mediterranean", "European"};
+    private String[] tabTitles = Category.allCategories;
 
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -25,19 +26,19 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         Fragment frag = null;
         switch (position) {
             case 0:
-                frag = AmericanFragment.newInstance(tabTitles[position]);
+                frag = SoupsFragment.newInstance(tabTitles[position]);
                 break;
             case 1:
-                frag = VeganFragment.newInstance(tabTitles[position]);
+                frag = SecondCoursesFragment.newInstance(tabTitles[position]);
                 break;
             case 2:
-                frag = AsianFragment.newInstance(tabTitles[position]);
+                frag = SaladsFragment.newInstance(tabTitles[position]);
                 break;
             case 3:
-                frag = MediterraneanFragment.newInstance(tabTitles[position]);
+                frag = DesertsFragment.newInstance(tabTitles[position]);
                 break;
             case 4:
-                frag = EuropeanFragment.newInstance(tabTitles[position]);
+                frag = DrinksFragment.newInstance(tabTitles[position]);
                 break;
         }
         return frag;
