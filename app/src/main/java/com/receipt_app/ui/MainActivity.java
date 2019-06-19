@@ -130,15 +130,17 @@ public class MainActivity extends ToolbarActivity implements CategorizedFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            /*case R.id.receipts:
+            case R.id.receipts:
                 intent = new Intent(this, MainActivity.class);
                 intent.putExtra("category", Category.SOUPS);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.ingredients:
                 intent = new Intent(this, IngredientsActivity.class);
                 startActivity(intent);
-                break;*/
+                finish();
+                break;
             case R.id.new_recipe:
                 intent = new Intent(this, CreateRecipeActivity.class);
                 intent.putExtra("category", getCurrentlyDisplayedCategory());

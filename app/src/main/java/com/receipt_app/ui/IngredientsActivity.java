@@ -58,7 +58,7 @@ public class IngredientsActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredients);
         networkManager = new NetworkManager(this);
-        /*networkManager.getIngredients(new Callback<IngredientsResponse>() {
+        networkManager.getIngredients(new Callback<IngredientsResponse>() {
             @Override
             public void onResponse(Call<IngredientsResponse> call, Response<IngredientsResponse> response) {
                 if (!response.isSuccessful()) {
@@ -76,7 +76,7 @@ public class IngredientsActivity extends ToolbarActivity {
             public void onFailure(Call<IngredientsResponse> call, Throwable t) {
 
             }
-        });*/
+        });
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -85,7 +85,7 @@ public class IngredientsActivity extends ToolbarActivity {
         ingredientRecyclerView = findViewById(R.id.recyclerView);
         emptyView = findViewById(R.id.empty_view);
 
-        /*ingredientAdapter = new IngredientsAdapter(this, ingredientList);
+        ingredientAdapter = new IngredientsAdapter(this, ingredientList);
         ingredientAdapter.setIngredientListener(position -> {
             ingredientList.remove(position);
             toggleEmptyView();
@@ -95,12 +95,12 @@ public class IngredientsActivity extends ToolbarActivity {
         toggleEmptyView();
 
         ingredientRecyclerView.setHasFixedSize(true);
-        ingredientRecyclerView.setAdapter(ingredientAdapter);*/
+        ingredientRecyclerView.setAdapter(ingredientAdapter);
 
 
     }
 
-    /*@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
@@ -113,6 +113,7 @@ public class IngredientsActivity extends ToolbarActivity {
             case R.id.ingredients:
                 intent = new Intent(this, IngredientsActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.sign_out:
                 UserPreferences.clear(this);
@@ -121,7 +122,7 @@ public class IngredientsActivity extends ToolbarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     private void navigateToLogin() {
         Intent startIntent = new Intent(this, LoginActivity.class);
