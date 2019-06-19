@@ -56,4 +56,13 @@ public class UserPreferences {
                 .remove(TOKEN)
                 .apply();
     }
+
+    public static void setIp(Context context, String ip) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit().putString("ip", ip).apply();
+    }
+
+    public static String getIp(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString("ip", null);
+    }
 }

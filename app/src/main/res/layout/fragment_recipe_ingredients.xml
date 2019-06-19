@@ -31,11 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-            <Spinner
-                android:id="@+id/planets_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 />
 
             <EditText
                 android:id="@+id/ingredientField"
@@ -43,7 +38,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:layout_margin="8dp"
-                android:layout_below="@id/planets_spinner"
                 android:hint="New ingredient" />
         </RelativeLayout>
 

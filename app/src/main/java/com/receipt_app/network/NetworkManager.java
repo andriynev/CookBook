@@ -2,6 +2,7 @@ package com.receipt_app.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,9 +51,14 @@ public class NetworkManager {
                 .build();
 
         gson = new GsonBuilder().setLenient().create();
+
+        String ip = UserPreferences.getIp(context);
+        if (ip == null) {
+            ip = "192.168.0.105";
+        }
         retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("http://192.168.0.105")
+                .baseUrl("http://"+ip)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

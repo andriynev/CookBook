@@ -75,4 +75,9 @@ public class LoginActivity extends ToolbarActivity {
     public void onCreateAccountPressed(View view) {
         startActivity(new Intent(this, RegisterActivity.class));
     }
+
+    public void onClickSettings(View view) {
+        startActivity(new Intent(this, SettingsActivity.class));
+        finish();
+    }
 }
