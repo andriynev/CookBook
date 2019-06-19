@@ -8,7 +8,8 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,111 +17,90 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.elmargomez.typer.Font;
 import com.elmargomez.typer.Typer;
-
 import com.receipt_app.R;
 import com.receipt_app.adapters.DatabaseAdapter;
+import com.receipt_app.adapters.IngredientAdapter;
+import com.receipt_app.adapters.IngredientsAdapter;
 import com.receipt_app.adapters.MainPagerAdapter;
 import com.receipt_app.models.Category;
+import com.receipt_app.models.Ingredient;
 import com.receipt_app.models.Recipe;
+import com.receipt_app.network.NetworkManager;
+import com.receipt_app.network.api.IngredientData;
+import com.receipt_app.network.api.IngredientsResponse;
 import com.receipt_app.ui.fragments.CategorizedFragment;
 import com.receipt_app.utils.ActivityTransition;
 import com.receipt_app.utils.ResultCodes;
 import com.receipt_app.utils.UserPreferences;
 
-public class MainActivity extends ToolbarActivity implements CategorizedFragment.CategorizedFragmentListener {
+import java.util.ArrayList;
+import java.util.List;
 
-    private static final int REQUEST_ADD_RECIPE = 1;
-    private static final int REQUEST_VIEW_RECIPE = 2;
-    private DatabaseAdapter databaseAdapter;
-    private MainPagerAdapter mAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
-    private ImageView first;
-    private ImageView second;
-    private ViewSwitcher mViewSwitcher;
+public class IngredientsActivity extends ToolbarActivity {
+    private NetworkManager networkManager;
+    private List<IngredientData> ingredientList = new ArrayList<>();
+    private IngredientsAdapter ingredientAdapter;
+
+    private RecyclerView ingredientRecyclerView;
+    private TextView emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ingredients);
+        networkManager = new NetworkManager(this);
+        /*networkManager.getIngredients(new Callback<IngredientsResponse>() {
+            @Override
+            public void onResponse(Call<IngredientsResponse> call, Response<IngredientsResponse> response) {
+                if (!response.isSuccessful()) {
+                    return;
+                }
 
-        Window w = getWindow();
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                if (response.body() == null) {
+                    return;
+                }
 
-        databaseAdapter = DatabaseAdapter.getInstance(this);
+                ingredientList = response.body().getList();
+            }
+
+            @Override
+            public void onFailure(Call<IngredientsResponse> call, Throwable t) {
+
+            }
+        });*/
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Recipes");
+        getSupportActionBar().setTitle("Ingredients");
 
-        mViewPager = findViewById(R.id.viewpager);
-        mTabLayout = findViewById(R.id.tablayout);
-        mCollapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
-        first = findViewById(R.id.first);
-        second = findViewById(R.id.second);
-        mViewSwitcher = findViewById(R.id.switcher);
-        mTabLayout.bringToFront();
-        mAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        ingredientRecyclerView = findViewById(R.id.recyclerView);
+        emptyView = findViewById(R.id.empty_view);
 
-        Typeface font = Typer.set(this).getFont(Font.ROBOTO_MEDIUM);
-        mCollapsingToolbarLayout.setCollapsedTitleTypeface(font);
-        mCollapsingToolbarLayout.setExpandedTitleTypeface(font);
-
-        mViewPager.setAdapter(mAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-        mTabLayout.setTabsFromPagerAdapter(mAdapter);
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                @DrawableRes int image = -1;
-                switch (position) {
-                    case 0:
-                        image = R.drawable.soup;
-                        break;
-                    case 1:
-                        image = R.drawable.second_course;
-                        break;
-                    case 2:
-                        image = R.drawable.salad;
-                        break;
-                    case 3:
-                        image = R.drawable.desert;
-                        break;
-                    case 4:
-                        image = R.drawable.drink;
-                        break;
-                }
-
-                if (first.getVisibility() == View.VISIBLE) {
-                    second.setImageResource(image);
-                    mViewSwitcher.showNext();
-                } else {
-                    first.setImageResource(image);
-                    mViewSwitcher.showPrevious();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+        /*ingredientAdapter = new IngredientsAdapter(this, ingredientList);
+        ingredientAdapter.setIngredientListener(position -> {
+            ingredientList.remove(position);
+            toggleEmptyView();
+            ingredientAdapter.notifyDataSetChanged();
         });
+
+        toggleEmptyView();
+
+        ingredientRecyclerView.setHasFixedSize(true);
+        ingredientRecyclerView.setAdapter(ingredientAdapter);*/
+
+
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
@@ -130,20 +110,9 @@ public class MainActivity extends ToolbarActivity implements CategorizedFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            case R.id.receipts:
-                intent = new Intent(this, MainActivity.class);
-                intent.putExtra("category", Category.SOUPS);
-                startActivity(intent);
-                break;
             case R.id.ingredients:
-                intent = new Intent(this, MainActivity.class);
-                intent.putExtra("category", Category.SOUPS);
+                intent = new Intent(this, IngredientsActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.new_recipe:
-                intent = new Intent(this, CreateRecipeActivity.class);
-                intent.putExtra("category", getCurrentlyDisplayedCategory());
-                startActivityForResult(intent, REQUEST_ADD_RECIPE);
                 break;
             case R.id.sign_out:
                 UserPreferences.clear(this);
@@ -152,53 +121,7 @@ public class MainActivity extends ToolbarActivity implements CategorizedFragment
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_ADD_RECIPE:
-                switch (resultCode) {
-                    case ResultCodes.RECIPE_ADDED:
-                        Snackbar.make(getWindow().getDecorView(), "Recipe added.", Snackbar.LENGTH_LONG)
-                                .show();
-                        break;
-                    case ResultCodes.RECIPE_EDITED:
-                        Snackbar.make(getWindow().getDecorView(), "Recipe modified.", Snackbar.LENGTH_LONG)
-                                .show();
-                        break;
-                }
-                break;
-            case REQUEST_VIEW_RECIPE:
-                switch (resultCode) {
-                    case ResultCodes.RECIPE_SHOULD_BE_EDITED:
-                        Recipe recipe = data.getParcelableExtra("recipe");
-                        Intent intent = new Intent(this, CreateRecipeActivity.class);
-                        intent.putExtra("recipe", recipe);
-                        intent.putExtra("category", recipe.getCategory());
-                        intent.putExtra("isUpdating", true);
-                        startActivityForResult(intent, REQUEST_ADD_RECIPE);
-                        break;
-                    case ResultCodes.RECIPE_SHOULD_BE_DELETED:
-                        long recipeId = data.getLongExtra("recipeId", -1);
-                        if (recipeId != -1) {
-                            onDeleteRecipe(recipeId);
-                            mViewPager.getAdapter().notifyDataSetChanged();
-                        }
-                        break;
-                }
-                break;
-        }
-    }
-    public void addRecipe(View view) {
-        Intent intent = new Intent(this, CreateRecipeActivity.class);
-        intent.putExtra("category", getCurrentlyDisplayedCategory());
-        startActivityForResult(intent, REQUEST_ADD_RECIPE);
-    }
-
-    private String getCurrentlyDisplayedCategory() {
-        return mAdapter.getPageTitle(mViewPager.getCurrentItem()).toString();
-    }
+    }*/
 
     private void navigateToLogin() {
         Intent startIntent = new Intent(this, LoginActivity.class);
@@ -206,27 +129,13 @@ public class MainActivity extends ToolbarActivity implements CategorizedFragment
         finish();
     }
 
-    @Override
-    public void onShowRecipe(Recipe recipe, Pair<View, String>[] pairs) {
-        Intent intent = new Intent(this, ViewRecipeActivity.class);
-        intent.putExtra("recipe", recipe);
-
-        ActivityTransition.startActivityForResultWithSharedElement(
-                this, intent, pairs[0].first, pairs[0].second, REQUEST_VIEW_RECIPE);
-    }
-
-    @Override
-    public void onEditRecipe(Recipe recipe) {
-        Intent intent = new Intent(this, CreateRecipeActivity.class);
-        intent.putExtra("recipe", recipe);
-        intent.putExtra("category", getCurrentlyDisplayedCategory());
-        intent.putExtra("isUpdating", true);
-        startActivityForResult(intent, REQUEST_ADD_RECIPE);
-    }
-
-    @Override
-    public void onDeleteRecipe(long recipeId) {
-        databaseAdapter.deleteRecipe(recipeId);
-        Snackbar.make(getWindow().getDecorView(), "Recipe deleted.", Snackbar.LENGTH_LONG).show();
+    private void toggleEmptyView() {
+        if (ingredientList.size() == 0) {
+            emptyView.setVisibility(View.VISIBLE);
+            ingredientRecyclerView.setVisibility(View.GONE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+            ingredientRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -8,45 +8,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import com.receipt_app.R;
 import com.receipt_app.models.Ingredient;
+import com.receipt_app.network.api.IngredientData;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+import java.util.List;
 
-    private List<Ingredient> ingredientList;
-    private boolean isEditable = true;
+public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder> {
+
+    private List<IngredientData> ingredientList;
     private Context mContext;
     private IngredientListener ingredientListener;
 
-    public IngredientAdapter(Context context, List<Ingredient> ingredientList) {
+    public IngredientsAdapter(Context context, List<IngredientData> ingredientList) {
         mContext = context;
         this.ingredientList = ingredientList;
-    }
-
-    public IngredientAdapter(Context context, List<Ingredient> ingredientList, boolean isEditable) {
-        mContext = context;
-        this.ingredientList = ingredientList;
-        this.isEditable = isEditable;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return isEditable ? 0 : 1;
     }
 
     @Override
     public IngredientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(viewType == 0 ? R.layout.ingredient_item_row : R.layout.ingredient_item_row_non_editable,
+                .inflate(R.layout.ingredient_item_row,
                         parent, false);
         return new IngredientViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final IngredientViewHolder holder, int position) {
-        Ingredient ingredient = ingredientList.get(position);
+        IngredientData ingredient = ingredientList.get(position);
         holder.bind(ingredient);
     }
 
@@ -64,16 +53,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             super(itemView);
 
             ingredientText = itemView.findViewById(R.id.ingredientText);
-            if (isEditable) {
-                wasteBin = itemView.findViewById(R.id.wasteBin);
-                wasteBin.setOnClickListener(v -> {
-                    if (ingredientListener != null)
-                        ingredientListener.onDeleteIngredient(getAdapterPosition());
-                });
-            }
+            wasteBin = itemView.findViewById(R.id.wasteBin);
+            wasteBin.setOnClickListener(v -> {
+                if (ingredientListener != null)
+                    ingredientListener.onEditIngredient(getAdapterPosition());
+            });
         }
 
-        public void bind(Ingredient ingredient) {
+        public void bind(IngredientData ingredient) {
             ingredientText.setText(ingredient.getName());
         }
     }
@@ -83,6 +70,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     public interface IngredientListener {
-        void onDeleteIngredient(int position);
+        void onEditIngredient(int id);
     }
 }

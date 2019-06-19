@@ -20,6 +20,7 @@
             android:name=".ui.CreateRecipeActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".ui.ViewRecipeActivity"/>
+        <activity android:name=".ui.IngredientsActivity"/>
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/SplashTheme">

@@ -24,6 +24,7 @@ import com.elmargomez.typer.Typer;
 import com.receipt_app.R;
 import com.receipt_app.adapters.DatabaseAdapter;
 import com.receipt_app.adapters.MainPagerAdapter;
+import com.receipt_app.models.Category;
 import com.receipt_app.models.Recipe;
 import com.receipt_app.ui.fragments.CategorizedFragment;
 import com.receipt_app.utils.ActivityTransition;
@@ -127,9 +128,19 @@ public class MainActivity extends ToolbarActivity implements CategorizedFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
+            /*case R.id.receipts:
+                intent = new Intent(this, MainActivity.class);
+                intent.putExtra("category", Category.SOUPS);
+                startActivity(intent);
+                break;
+            case R.id.ingredients:
+                intent = new Intent(this, IngredientsActivity.class);
+                startActivity(intent);
+                break;*/
             case R.id.new_recipe:
-                Intent intent = new Intent(this, CreateRecipeActivity.class);
+                intent = new Intent(this, CreateRecipeActivity.class);
                 intent.putExtra("category", getCurrentlyDisplayedCategory());
                 startActivityForResult(intent, REQUEST_ADD_RECIPE);
                 break;

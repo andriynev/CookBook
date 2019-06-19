@@ -1,11 +1,10 @@
 package com.receipt_app.network.api;
 
-public class AuthResponse {
+public class IngredientData {
     private int id;
-    private String access_token;
+    private String name;
 
-    public AuthResponse() {
-
+    public IngredientData() {
     }
 
     public int getId() {
@@ -16,11 +15,11 @@ public class AuthResponse {
         this.id = id;
     }
 
-    public String getAccessToken() {
-        return access_token;
+    public String getName() {
+        return name;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.access_token = accessToken;
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.receipt_app.models.User;
 import com.receipt_app.network.api.AuthResponse;
 import com.receipt_app.network.api.FoodApi;
+import com.receipt_app.network.api.IngredientsResponse;
 import com.receipt_app.utils.UserPreferences;
 
 import java.io.IOException;
@@ -80,6 +81,20 @@ public class NetworkManager {
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
+                callback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void getIngredients(Callback<IngredientsResponse> callback) {
+        service.getIngredients().enqueue(new Callback<IngredientsResponse>() {
+            @Override
+            public void onResponse(Call<IngredientsResponse> call, retrofit2.Response<IngredientsResponse> response) {
+                callback.onResponse(call, response);
+            }
+
+            @Override
+            public void onFailure(Call<IngredientsResponse> call, Throwable t) {
                 callback.onFailure(call, t);
             }
         });

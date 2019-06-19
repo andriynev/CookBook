@@ -22,7 +22,6 @@ public class LoginActivity extends ToolbarActivity {
     private TextInputLayout mLoginEmail;
     private TextInputLayout mLoginPassword;
 
-    private DatabaseAdapter databaseAdapter;
     private NetworkManager networkManager;
 
     @Override
@@ -30,7 +29,6 @@ public class LoginActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        databaseAdapter = DatabaseAdapter.getInstance(this);
         networkManager = new NetworkManager(this);
 
         mToolbar = findViewById(R.id.toolbar);
