@@ -70,6 +70,7 @@ public class IngredientsActivity extends ToolbarActivity {
                 }
 
                 ingredientList = response.body().getList();
+                toggleEmptyView();
             }
 
             @Override
